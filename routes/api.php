@@ -1,19 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
-Route::get('/user', function () {
-    return response()->json(['hola' => "hola"], 200);
+Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
+	Route::get('/GetAllUsers', 'getAllUsers'); //GET -> traer data
+	Route::get('/GetAnUser/{user}', 'getAnUser'); //GET -> traer data
+	Route::post('/CreateUser', 'createUser'); //POST -> crea data
+	Route::put('/UpdateUser/{user}', 'updateUser'); //PUT -> edita data
+	Route::delete('/DeleteUser/{user}', 'deleteUser'); //DELETE -> elimina data
 });

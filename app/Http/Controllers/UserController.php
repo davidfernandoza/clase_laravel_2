@@ -2,20 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Traits\UserTrait;
 
 class UserController extends Controller
 {
-	use UserTrait;
-
-	public function getAnUser()
+	public function getAllUsers()
 	{
-		// code...
+		$users = User::get();
+		return response()->json(['users' => $users], 200);
 	}
 
-	public function showAllUsers()
+	public function getAnUser(User $user)
 	{
-		$this->buildUserObject();
+		return response()->json(['user' => $user], 200);
+	}
+
+	public function createUser(Request $request)
+	{
+		$user = new User($request->all());
+		$user->save();
+		return response()->json(['user' => $user], 201);
+	}
+
+	public function updateUser(User $user, Request $request)
+	{
+		$user->update($request->all());
+		return response()->json(['user' => $user->refresh()], 201);
+	}
+
+	public function deleteUser(User $user)
+	{
+		$user->delete();
+		return response()->json([], 204);
 	}
 }
