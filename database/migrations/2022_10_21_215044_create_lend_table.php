@@ -12,14 +12,20 @@ return new class extends Migration
 		Schema::create('lend', function (Blueprint $table) {
 			$table->id();
 			$table->bigInteger('book_id')->unsigned();
-			$table->bigInteger('user_id')->unsigned();
+			$table->bigInteger('owner_user_id')->unsigned();
+			$table->bigInteger('customer_user_id')->unsigned();
 			$table->date('date_out');
 			$table->date('date_in');
 			$table->enum('status', ['lend', 'returned']);
 			$table->timestamps();
 			$table->softDeletes();
 
-			$table->foreign('user_id')
+			$table->foreign('customer_user_id')
+				->references('id')
+				->on('users')
+				->onDelete('cascade');
+
+			$table->foreign('owner_user_id')
 				->references('id')
 				->on('users')
 				->onDelete('cascade');
