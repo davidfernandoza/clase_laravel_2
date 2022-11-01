@@ -13,6 +13,18 @@ class UserController extends Controller
 		return response()->json(['users' => $users], 200);
 	}
 
+	public function getAllUsersWithLends()
+	{
+		$users = User::with('CustomerLends.Book')->get();
+		return response()->json(['users' => $users], 200);
+	}
+
+	public function getAllLendsByUser(User $user)
+	{
+		$customerLends = $user->load('CustomerLends.Book.Category', 'CustomerLends.Book.Author')->CustomerLends;
+		return response()->json(['customer_lends' => $customerLends], 200);
+	}
+
 	public function getAnUser(User $user)
 	{
 		return response()->json(['user' => $user], 200);
