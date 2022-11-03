@@ -6,9 +6,17 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserController;
 
+Route::get('/', [BookController::class, 'showHomeWithBooks'])->name('home');
 
-Route::view('/', 'home');
+// Users
+Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
+	Route::get('/', 'showAllUsers')->name('users');
+	Route::get('/CreateUser', 'showCreateUser')->name('user.create');
+});
+
 
 Route::group(['controller' => LoginController::class], function () {
 	// Login Routes...
@@ -59,6 +67,3 @@ Route::group(['controller' => VerificationController::class], function () {
 	Route::post('email/resend', 'resend')
 		->name('verification.resend');
 });
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
