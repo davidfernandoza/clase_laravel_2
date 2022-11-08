@@ -14,6 +14,7 @@
 					<th scope="col">Nombre</th>
 					<th scope="col">Apellido</th>
 					<th scope="col">Correo</th>
+					<th scope="col">Acciones</th>
 				  </tr>
 				</thead>
 				<tbody>
@@ -23,6 +24,14 @@
 							<td>{{$user->name}}</td>
 							<td>{{$user->last_name}}</td>
 							<td>{{$user->email}}</td>
+							<td class="d-flex">
+								<a href="{{route('user.edit', ['user' => $user->id])}}" class="btn btn-warning btn-sm me-1">Editar</a>
+								<form action="{{route('user.delete', ['user' => $user->id])}}" method="post">
+									@csrf
+									@method('DELETE')
+									<button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+								</form>
+							</td>
 						</tr>
 					@endforeach
 				</tbody>
