@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\LendController;
 use App\Http\Controllers\UserController;
 
@@ -19,4 +20,9 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 
 Route::group(['prefix' => 'Lends', 'controller' => LendController::class], function () {
 	Route::post('/CreateLend', 'createLend');
+});
+
+
+Route::group(['prefix' => 'Books', 'controller' => BookController::class], function () {
+	Route::get('/GetAllBooks', 'getAllBooks')->name('books');
 });

@@ -39,6 +39,9 @@
 							{{-- Users --}}
 							<a class="dropdown-item" href="{{ route('users') }}">Usuarios</a>
 
+							{{-- Books --}}
+							<a class="dropdown-item" href="{{ route('books') }}">Libros</a>
+
 							{{-- Logout --}}
 							<a class="dropdown-item" href="{{ route('logout') }}"
 							   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout

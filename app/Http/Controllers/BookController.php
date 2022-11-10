@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+
+	public function showBooks()
+	{
+		return view('books.index');
+	}
+
 	public function showHomeWithBooks()
 	{
 		$books = $this->getAllBooks()->original['books'];
@@ -15,7 +21,7 @@ class BookController extends Controller
 
 	public function getAllBooks()
 	{
-		$books = Book::get();
+		$books = Book::with('Author')->get();
 		return response()->json(['books' => $books], 200);
 	}
 }

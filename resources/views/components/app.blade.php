@@ -23,12 +23,12 @@
 	<x-menu/>
 
 	  {{-- Content --}}
-	  <main id="app">
-		<div class="container mt-4">
-			<x-alerts/>
-		</div>
+		<main id="app">
+			<div class="container mt-4">
+				<x-alerts/>
+			</div>
 
-		{{$slot}}
-	  </main>
+			{{$slot}}
+		</main>
 </body>
 </html>
