@@ -24,4 +24,11 @@ class BookController extends Controller
 		$books = Book::with('Author')->get();
 		return response()->json(['books' => $books], 200);
 	}
+
+	public function saveBook(Request $request)
+	{
+		$book = new Book($request->all());
+		$book->save();
+		return response()->json(['book' => $book], 200);
+	}
 }

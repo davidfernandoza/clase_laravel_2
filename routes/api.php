@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LendController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CategoryController;
 
 
 Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
@@ -24,5 +26,14 @@ Route::group(['prefix' => 'Lends', 'controller' => LendController::class], funct
 
 
 Route::group(['prefix' => 'Books', 'controller' => BookController::class], function () {
-	Route::get('/GetAllBooks', 'getAllBooks')->name('books');
+	Route::get('/GetAllBooks', 'getAllBooks');
+	Route::post('/SaveBook', 'saveBook');
+});
+
+Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
+	Route::get('/GetAllCategories', 'getAllCategories');
+});
+
+Route::group(['prefix' => 'Authors', 'controller' => AuthorController::class], function () {
+	Route::get('/GetAllAuthors', 'getAllAuthors');
 });
