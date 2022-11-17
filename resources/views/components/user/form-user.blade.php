@@ -1,6 +1,22 @@
 
 {{-- name --}}
 <div class="mb-3">
+	<label for="role" class="form-label">Role</label>
+	<select name="role" id="role" class="form-control">
+		@foreach ($roles as $role )
+			<option value="{{$role}}">{{$role}}</option>
+		@endforeach
+		{{-- selected="{{isset($user) ? ($role == $user->roles[0]->name ? true : false): false}}" --}}
+	</select>
+	@error('role')
+		<span class="invalid-feedback" role="alert">
+			<strong>{{ $message }}</strong>
+		</span>
+	@enderror
+</div>
+
+{{-- name --}}
+<div class="mb-3">
 	<label for="name" class="form-label">Nombre</label>
 	<input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
 	value="{{old('name')? old('name'): (isset($user)? $user->name: '')}}"	>

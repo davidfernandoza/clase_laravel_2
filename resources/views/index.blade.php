@@ -4,7 +4,11 @@
 	<section class="d-flex justify-content-center flex-wrap">
 		@foreach ($books as $book )
 			<div class="card mx-3 my-3" style="width: 18rem;">
-				<img src="https://cdn.lorem.space/images/book/.cache/150x150/the-great-gatsby.jpeg" class="card-img-top" alt="Libro">
+				@if ($book->image)
+					<img src="/storage/images/{{$book->image}}" class="card-img-top" alt="Libro">
+				@else
+					<img src="https://cdn.lorem.space/images/book/.cache/150x150/the-great-gatsby.jpeg" class="card-img-top" alt="Libro">
+				@endif
 
 				<div class="card-body">
 					<h5 class="card-title">{{$book->title}}</h5>
