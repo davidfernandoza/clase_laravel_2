@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class BookController extends Controller
 {
+
 
 	public function showBooks()
 	{
@@ -24,6 +26,28 @@ class BookController extends Controller
 	{
 		$books = Book::with('Author')->get();
 		return response()->json(['books' => $books], 200);
+	}
+
+	public function getAllBooksForDataTable()
+	{
+		$books = Book::with('Author');
+		return DataTables::of($books)
+			->addColumn('action', function ($row) {
+				return "<a
+				href='#'
+				onclick='event.preventDefault();'
+				data-id='{$row->id}'
+				role='edit'
+				class='btn btn-warning btn-sm'>Edit</a>
+				<a
+				href='#'
+				onclick='event.preventDefault();'
+				data-id='{$row->id}'
+				role='delete'
+				class='btn btn-danger btn-sm'>Delete</a>";
+			})
+			->rawColumns(['action'])
+			->make();
 	}
 
 	public function getABook(Book $book)

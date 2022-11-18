@@ -1,5 +1,5 @@
 <template>
-	<table class="table">
+	<table class="table" id="bookTable" @click="getEvent">
 		<thead>
 			<tr>
 				<th>Titulo</th>
@@ -9,44 +9,70 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="(book, index) in books" :key="index">
-				<th>{{book.title}}</th>
-				<td>{{book.author.name}}</td>
-				<td>{{book.stock}}</td>
-				<td>
-					<button class="btn btn-warning me-2" @click="getBook(book)">Editar</button>
-					<button class="btn btn-danger" @click="deletBook(book)">Eliminar</button>
-				</td>
-			</tr>
 		</tbody>
 	</table>
 </template>
 
 <script>
 	export default {
-		props: ['books_data'],
 		data() {
 			return {
-				books: []
+				books: [],
+				datatable: {}
 			}
 		},
-		created() {
+		mounted() {
 			this.index()
 		},
 		methods: {
-			index() {
-				this.books = [...this.books_data]
+			async index() {
+				this.mountDataTable()
 			},
-
-			async getBook(book) {
+			mountDataTable() {
+				this.datatable = $('#bookTable').DataTable({
+					processing: true,
+					serverSide: true,
+					ajax: {
+						url: '/Books/GetAllBooksDataTable'
+					},
+					columns: [
+						{ data: 'title' },
+						{ data: 'author.name', searchable: false },
+						{ data: 'stock' },
+						{ data: 'action' }
+					]
+				})
+			},
+			async getBooks() {
 				try {
-					// const { data } = await axios.get(`Books/GetABook/${book.id}`)
-					this.$parent.editBook(book)
+					this.load = false
+					const { data } = await axios.get('Books/GetAllBooks')
+					this.books = data.books
+					this.load = true
+				} catch (error) {
+					console.error(error)
+				}
+				this.mountDataTable()
+			},
+			getEvent(event) {
+				const button = event.target
+				if (button.getAttribute('role') == 'edit') {
+					this.getBook(button.getAttribute('data-id'))
+				}
+
+				if (button.getAttribute('role') == 'delete') {
+					this.deletBook(button.getAttribute('data-id'))
+				}
+			},
+			async getBook(book_id) {
+				try {
+					const { data } = await axios.get(`Books/GetABook/${book_id}`)
+					this.$parent.editBook(data.book)
 				} catch (error) {
 					console.error(error)
 				}
 			},
-			async deletBook(book) {
+			async deletBook(book_id) {
 				try {
 					const result = await swal.fire({
 						icon: 'info',
@@ -57,8 +83,9 @@
 
 					if (!result.isConfirmed) return
 
-					await axios.delete(`Books/DeleteABook/${book.id}`)
-					this.$parent.getBooks()
+					this.datatable.destroy()
+					await axios.delete(`Books/DeleteABook/${book_id}`)
+					this.index()
 					swal.fire({
 						icon: 'success',
 						title: 'Felicidades!',

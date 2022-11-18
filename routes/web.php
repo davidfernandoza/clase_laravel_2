@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 
 Route::get('/test', function () {
+	return bcrypt('V.martinez2022!');
 	// $users = User::get();
 	// foreach ($users as $user) {
 	// 	if ($user->number_id == 1093221111) $user->assignRole('admin');
@@ -44,6 +45,7 @@ Route::group([
 Route::group(['prefix' => 'Books', 'middleware' => ['auth', 'role:admin'], 'controller' => BookController::class], function () {
 	Route::get('/', 'showBooks')->name('books');
 	Route::get('/GetAllBooks', 'getAllBooks');
+	Route::get('/GetAllBooksDataTable', 'getAllBooksForDataTable');
 	Route::get('/GetABook/{book}', 'getABook');
 	Route::post('/SaveBook', 'saveBook');
 	Route::post('/UpdateBook/{book}', 'updateBook');

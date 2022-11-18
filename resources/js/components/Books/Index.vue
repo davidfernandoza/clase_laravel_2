@@ -7,16 +7,7 @@
 		</div>
 
 		<div class="card-body">
-			<section class="table-responsive" v-if="load">
-				<table-component :books_data="books" />
-			</section>
-
-			<!-- Load -->
-			<section v-else class="d-flex justify-content-center my-3">
-				<div class="spinner-border" role="status">
-					<span class="visually-hidden">Loading...</span>
-				</div>
-			</section>
+			<table-component ref="table" />
 		</div>
 
 		<section v-if="load_modal">
@@ -38,30 +29,12 @@
 		},
 		data() {
 			return {
-				books: [],
-				load: false,
 				load_modal: false,
 				modal: null,
 				book: null
 			}
 		},
-		created() {
-			this.index()
-		},
 		methods: {
-			async index() {
-				await this.getBooks()
-			},
-			async getBooks() {
-				try {
-					this.load = false
-					const { data } = await axios.get('Books/GetAllBooks')
-					this.books = data.books
-					this.load = true
-				} catch (error) {
-					console.error(error)
-				}
-			},
 			openModal() {
 				this.load_modal = true
 				setTimeout(() => {
@@ -79,7 +52,8 @@
 			},
 			closeModal() {
 				this.modal.hide()
-				this.getBooks()
+				this.$refs.table.datatable.destroy()
+				this.$refs.table.index()
 			},
 			editBook(book) {
 				this.book = book
