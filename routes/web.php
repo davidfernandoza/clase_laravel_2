@@ -12,17 +12,10 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
+use App\Http\Controllers\TestController;
 
-Route::get('/test', function () {
-	return bcrypt('V.martinez2022!');
-	// $users = User::get();
-	// foreach ($users as $user) {
-	// 	if ($user->number_id == 1093221111) $user->assignRole('admin');
-	// 	else $user->assignRole('user');
-	// }
-	// Role::create(['name' => 'user']);
-	// return Role::all()->pluck('name');
-});
+Route::get('/test', [TestController::class, 'showTestView'])->name('test');
+Route::get('/getProducts', [TestController::class, 'getProducts'])->name('getProducts');
 
 
 Route::get('/', [BookController::class, 'showHomeWithBooks'])->name('home');
@@ -37,7 +30,7 @@ Route::group([
 	Route::get('/EditUser/{user}', 'showEditUser')->name('user.edit');
 
 	Route::post('/CreateUser', 'createUser')->name('user.create.post');
-	Route::put('/EditUser/{user}', 'updateUser')->name('user.edit.put');
+	Route::put('/EditUser/{user}', 'updateUser')->name('user.edit.put'); // no para archivos
 	Route::delete('/DeleteUser/{user}', 'deleteUser')->name('user.delete');
 });
 
