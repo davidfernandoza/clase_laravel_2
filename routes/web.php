@@ -4,6 +4,7 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
@@ -12,13 +13,23 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\Products\CategoryProductController;
 
 Route::get('/test', [TestController::class, 'showTestView'])->name('test');
 Route::get('/getProducts', [TestController::class, 'getProducts'])->name('getProducts');
 
 
 Route::get('/', [BookController::class, 'showHomeWithBooks'])->name('home');
+
+// Categories
+Route::group(['prefix' => 'category-products', 'middleware' => ['auth', 'role:admin'], 'controller' => CategoryProductController::class], function () {
+
+	Route::get('/index', 'index'); //Mostrar la vista
+	Route::delete('/delete/{category}', 'delete');
+	Route::post('/create', 'create');
+	Route::post('/update/{category}', 'update');
+});
+
 
 // Users
 Route::group([

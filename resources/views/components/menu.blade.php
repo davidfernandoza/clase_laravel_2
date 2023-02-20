@@ -49,6 +49,10 @@
 							   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout
 							</a>
 
+							{{-- Category Products --}}
+							<a class="dropdown-item" href="/category-products/index">Category Products</a>
+
+
 							<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 								@csrf
 							</form>
